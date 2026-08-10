@@ -1,4 +1,525 @@
-<html>
-hello, how are you?
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes, viewport-fit=cover" />
+  <title>🎆 Birthday · Shan & Hin</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
 
+    body {
+      background: #0a0f1e;
+      min-height: 100vh;
+      min-height: 100dvh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Segoe UI', 'Poppins', system-ui, -apple-system, sans-serif;
+      touch-action: pan-y;  
+      overflow: hidden;
+    }
+
+    .firework-wrapper {
+      position: relative;
+      width: 100%;
+      max-width: 500px;
+      aspect-ratio: 1 / 1.2;
+      background: radial-gradient(circle at 20% 30%, #162033, #02070e);
+      border-radius: 36px;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.7), 0 0 0 1px rgba(255,215,0,0.08) inset;
+      overflow: hidden;
+      touch-action: none;
+      margin: 12px;
+    }
+
+    #fireworksCanvas {
+      display: block;
+      width: 100%;
+      height: 100%;
+      background: transparent;
+      cursor: pointer;
+      touch-action: none;
+    }
+
+    /* ----- MESSAGE OVERLAY (positioned with flex) ----- */
+    .message-overlay {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;   /* left align by default */
+      justify-content: flex-start;
+      pointer-events: none;      /* allow taps to pass to canvas */
+      opacity: 0;
+      transition: opacity 1.8s ease-in-out;
+      padding: 22px 24px;
+      z-index: 10;
+      text-shadow: 0 0 30px rgba(255, 200, 100, 0.6), 0 0 60px rgba(255, 100, 0, 0.4);
+    }
+
+    .message-overlay.show {
+      opacity: 1;
+    }
+
+    /* ---- TOP LEFT: Shan (same size as Hin) ---- */
+    .message-overlay .top-left {
+      align-self: flex-start;
+      font-size: clamp(1.8rem, 10vw, 3.2rem);
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      background: linear-gradient(135deg, #ffe28c, #ffb347, #ff8a5c);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      filter: drop-shadow(0 4px 20px rgba(255, 160, 50, 0.6));
+      line-height: 1.1;
+      margin-top: 0.1em;
+      margin-left: 0;
+    }
+
+    /* ---- CENTER: Happy birthday (smaller, one row) ---- */
+    .message-overlay .center-happy {
+      align-self: center;
+      font-size: clamp(1.3rem, 6.5vw, 2.4rem);
+      font-weight: 700;
+      text-align: center;
+      background: linear-gradient(135deg, #ffe6b3, #ffcc88, #ffb366);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      filter: drop-shadow(0 0 30px #ffaa33);
+      letter-spacing: 0.06em;
+      margin-top: 0.5em;
+      margin-bottom: auto;
+      text-shadow: 0 0 30px rgba(255, 170, 50, 0.5);
+      line-height: 1.2;
+      width: 100%;
+      white-space: nowrap;      /* force one row */
+    }
+
+    /* ---- BOTTOM RIGHT: Hin + date ---- */
+    .message-overlay .bottom-right {
+      align-self: flex-end;
+      margin-top: auto;
+      margin-bottom: 0.4em;
+      text-align: right;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      line-height: 1.2;
+    }
+
+    .message-overlay .bottom-right .hin-name {
+      font-size: clamp(1.8rem, 10vw, 3.2rem);
+      font-weight: 700;
+      background: linear-gradient(135deg, #fce9c0, #ffd699, #ffb86b);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      filter: drop-shadow(0 0 25px #ff8800);
+      letter-spacing: 0.04em;
+    }
+
+    .message-overlay .bottom-right .date {
+      font-size: clamp(1.1rem, 5vw, 1.9rem);
+      font-weight: 400;
+      background: linear-gradient(135deg, #ffddbb, #ffb377);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      filter: drop-shadow(0 0 18px #ff8800);
+      letter-spacing: 0.1em;
+      margin-top: -0.1em;
+      opacity: 0.95;
+    }
+
+    /* subtle glow behind text (optional) */
+    .message-overlay::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(circle at 20% 20%, rgba(255,215,0,0.05), transparent 50%);
+      pointer-events: none;
+    }
+
+    .info {
+      margin-top: 8px;
+      color: rgba(255, 255, 200, 0.5);
+      font-size: 0.85rem;
+      letter-spacing: 0.03em;
+      text-align: center;
+      background: rgba(0,0,0,0.3);
+      padding: 10px 18px;
+      border-radius: 60px;
+      backdrop-filter: blur(4px);
+      border: 1px solid rgba(255,215,0,0.1);
+      max-width: 320px;
+      width: fit-content;
+      margin-left: auto;
+      margin-right: auto;
+      user-select: none;
+      pointer-events: none;
+      transition: opacity 0.5s;
+    }
+
+    .info span {
+      display: inline-block;
+      animation: pulseGlow 2s infinite alternate;
+    }
+
+    @keyframes pulseGlow {
+      0% { opacity: 0.5; text-shadow: 0 0 2px #ffaa33; }
+      100% { opacity: 1; text-shadow: 0 0 12px #ffbb44, 0 0 20px #ff8800; }
+    }
+
+    @media (max-width: 420px) {
+      .firework-wrapper {
+        border-radius: 24px;
+        margin: 8px;
+        aspect-ratio: 1 / 1.3;
+      }
+      .info {
+        font-size: 0.7rem;
+        padding: 6px 14px;
+        max-width: 240px;
+      }
+      .message-overlay {
+        padding: 16px 18px;
+      }
+    }
+
+    @media (orientation: landscape) and (max-height: 500px) {
+      .firework-wrapper {
+        max-width: 70vh;
+        aspect-ratio: 1 / 1.1;
+      }
+    }
+  </style>
+</head>
+<body>
+<div class="firework-wrapper">
+  <canvas id="fireworksCanvas"></canvas>
+
+  <!-- Message overlay: Shan top-left · Happy birthday center (one row) · Hin + date bottom-right -->
+  <div class="message-overlay" id="messageOverlay">
+    <div class="top-left">Shan</div>
+    <div class="center-happy">✨ Happy birthday ✨</div>
+    <div class="bottom-right">
+      <span class="hin-name">Hin</span>
+      <span class="date">13 Aug 2026</span>
+    </div>
+  </div>
+</div>
+<div class="info"><span>✨ tap · burst · sparkle ✨</span></div>
+
+<script>
+  (function(){
+    // ----- canvas & overlay -----
+    const canvas = document.getElementById('fireworksCanvas');
+    const ctx = canvas.getContext('2d');
+    const overlay = document.getElementById('messageOverlay');
+
+    let width, height;
+
+    function resizeCanvas() {
+      const rect = canvas.parentElement.getBoundingClientRect();
+      const dpr = window.devicePixelRatio || 1;
+      const cssWidth = rect.width;
+      const cssHeight = rect.height;
+      canvas.style.width = cssWidth + 'px';
+      canvas.style.height = cssHeight + 'px';
+      canvas.width = cssWidth * dpr;
+      canvas.height = cssHeight * dpr;
+      width = canvas.width;
+      height = canvas.height;
+      ctx.scale(dpr, dpr);
+      canvas._cssWidth = cssWidth;
+      canvas._cssHeight = cssHeight;
+    }
+
+    resizeCanvas();
+    window.addEventListener('resize', () => {
+      resizeCanvas();
+    });
+
+    // ----- particle system (CSS pixel coords) -----
+    const particles = [];
+    const MAX_PARTICLES = 700;
+    const GRAVITY = 0.035;
+    const EXPLOSION_SPEED = 4.8;
+    const SPARKLE_CHANCE = 0.3;
+
+    const rand = (min, max) => Math.random() * (max - min) + min;
+
+    const palettes = [
+      ['#ff4d6d', '#ff8c9e', '#ffb3c1', '#ffd9e0'],
+      ['#ffb347', '#ffa500', '#ffcc66', '#ffe699'],
+      ['#6a5acd', '#8b7ae6', '#b5a6f0', '#d4c8ff'],
+      ['#00b4d8', '#48cae4', '#90e0ef', '#caf0f8'],
+      ['#06d6a0', '#2ee6b0', '#7cf5c6', '#baf8dc'],
+      ['#ff006e', '#ff4d8f', '#ff85b3', '#ffb8d0'],
+      ['#f9c74f', '#f9d371', '#fae588', '#fcf2b0'],
+      ['#9b5de5', '#b77cf2', '#d4a6f7', '#e8ccff'],
+    ];
+
+    function randomPalette() {
+      return palettes[Math.floor(Math.random() * palettes.length)];
+    }
+
+    function createParticle(x, y, color, vx, vy, life, size = 4.0) {
+      return {
+        x, y, vx, vy, color,
+        life: life || 1.0,
+        maxLife: life || 1.0,
+        size: size * (0.7 + Math.random() * 0.6),
+        decay: 0.012 + Math.random() * 0.025,
+        gravity: GRAVITY * (0.7 + Math.random() * 0.6),
+        sparkle: Math.random() < SPARKLE_CHANCE,
+      };
+    }
+
+    function burstFirework(x, y, colorPalette, count = 70) {
+      const colors = colorPalette.slice(0);
+      for (let i = 0; i < count; i++) {
+        const angle = rand(0, Math.PI * 2);
+        const speed = rand(1.0, EXPLOSION_SPEED) * (0.7 + Math.random() * 0.6);
+        const vx = Math.cos(angle) * speed;
+        const vy = Math.sin(angle) * speed - 0.3;
+        const color = colors[Math.floor(Math.random() * colors.length)];
+        const life = 0.9 + Math.random() * 0.5;
+        const size = 3.0 + Math.random() * 5;
+        const p = createParticle(x, y, color, vx, vy, life, size);
+        if (p.sparkle) {
+          p.size *= 1.6;
+          p.decay *= 0.7;
+        }
+        particles.push(p);
+      }
+      if (particles.length > MAX_PARTICLES) {
+        particles.splice(0, particles.length - MAX_PARTICLES);
+      }
+    }
+
+    function miniBurst(x, y, count = 20) {
+      const pal = randomPalette();
+      for (let i = 0; i < count; i++) {
+        const angle = rand(0, Math.PI * 2);
+        const speed = rand(0.5, 2.8);
+        const vx = Math.cos(angle) * speed;
+        const vy = Math.sin(angle) * speed - 0.5;
+        const color = pal[Math.floor(Math.random() * pal.length)];
+        const p = createParticle(x, y, color, vx, vy, 0.8 + Math.random() * 0.4, 2.2 + Math.random() * 3);
+        p.decay = 0.02 + Math.random() * 0.03;
+        particles.push(p);
+      }
+    }
+
+    function spawnRandomFirework() {
+      const cssW = canvas._cssWidth || canvas.width;
+      const cssH = canvas._cssHeight || canvas.height;
+      const margin = 20;
+      const x = rand(margin, cssW - margin);
+      const y = rand(margin * 1.5, cssH * 0.85);
+      const pal = randomPalette();
+      const count = Math.floor(rand(55, 100));
+      burstFirework(x, y, pal, count);
+      if (Math.random() > 0.65) {
+        setTimeout(() => {
+          miniBurst(x + rand(-15, 15), y + rand(-15, 15), 12);
+        }, 60);
+      }
+    }
+
+    function spawnInitialBursts() {
+      const cssW = canvas._cssWidth || canvas.width;
+      const cssH = canvas._cssHeight || canvas.height;
+      const midX = cssW / 2;
+      const midY = cssH * 0.45;
+      burstFirework(midX - 40, midY - 30, palettes[0], 65);
+      burstFirework(midX + 50, midY + 10, palettes[3], 70);
+      burstFirework(midX - 10, midY - 70, palettes[6], 55);
+      setTimeout(() => {
+        miniBurst(midX + 70, midY - 50, 20);
+        miniBurst(midX - 70, midY + 20, 18);
+      }, 200);
+    }
+
+    // ----- SHOW MESSAGE after a delay -----
+    let messageShown = false;
+
+    function showBirthdayMessage() {
+      if (messageShown) return;
+      messageShown = true;
+      overlay.classList.add('show');
+      const infoEl = document.querySelector('.info');
+      if (infoEl) {
+        infoEl.style.opacity = '0.3';
+        infoEl.style.transition = 'opacity 1.5s';
+      }
+    }
+
+    // ----- animation loop -----
+    function draw() {
+      const cssW = canvas._cssWidth || canvas.width;
+      const cssH = canvas._cssHeight || canvas.height;
+
+      ctx.clearRect(0, 0, cssW, cssH);
+
+      // faint stars
+      ctx.fillStyle = 'rgba(255,255,240,0.04)';
+      for (let i=0; i<25; i++) {
+        if (i%2===0) continue;
+        const sx = (i*37 + 13) % cssW;
+        const sy = (i*53 + 7) % cssH;
+        ctx.beginPath();
+        ctx.arc(sx, sy, 0.6 + i%3, 0, Math.PI*2);
+        ctx.fillStyle = `rgba(255,240,200,${0.1 + (i%5)*0.04})`;
+        ctx.fill();
+      }
+
+      // particles
+      for (let i = particles.length - 1; i >= 0; i--) {
+        const p = particles[i];
+        p.vx *= 0.99;
+        p.vy += p.gravity;
+        p.x += p.vx;
+        p.y += p.vy;
+        p.life -= p.decay;
+        if (p.life <= 0 || p.y > cssH + 20 || p.x < -20 || p.x > cssW + 20) {
+          particles.splice(i, 1);
+          continue;
+        }
+
+        const alpha = Math.min(p.life / p.maxLife * 1.2, 1.0);
+        const size = p.size * (0.3 + 0.7 * (p.life / p.maxLife));
+
+        // glow
+        const grad = ctx.createRadialGradient(p.x, p.y, 0, p.x, p.y, size * 2.6);
+        grad.addColorStop(0, p.color + 'dd');
+        grad.addColorStop(0.4, p.color + '99');
+        grad.addColorStop(1, p.color + '00');
+        ctx.globalAlpha = alpha * 0.6;
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, size * 2.6, 0, Math.PI * 2);
+        ctx.fillStyle = grad;
+        ctx.fill();
+
+        // main dot
+        ctx.globalAlpha = alpha * 0.95;
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, size * 0.7, 0, Math.PI * 2);
+        ctx.fillStyle = p.color;
+        ctx.fill();
+
+        if (p.sparkle && p.life > 0.3) {
+          ctx.globalAlpha = alpha * 0.5;
+          ctx.fillStyle = '#fff9e6';
+          ctx.beginPath();
+          ctx.arc(p.x - size*0.3, p.y - size*0.4, size * 0.2, 0, Math.PI*2);
+          ctx.fill();
+          ctx.beginPath();
+          ctx.arc(p.x + size*0.3, p.y + size*0.2, size * 0.15, 0, Math.PI*2);
+          ctx.fill();
+          ctx.fillStyle = '#ffdd99';
+          ctx.beginPath();
+          ctx.arc(p.x - size*0.2, p.y + size*0.5, size * 0.1, 0, Math.PI*2);
+          ctx.fill();
+        }
+        ctx.globalAlpha = 1.0;
+      }
+
+      requestAnimationFrame(draw);
+    }
+
+    // ----- auto firework interval -----
+    let autoInterval;
+
+    function startAutoFireworks() {
+      if (autoInterval) clearInterval(autoInterval);
+      autoInterval = setInterval(() => {
+        spawnRandomFirework();
+        if (Math.random() > 0.7) {
+          setTimeout(spawnRandomFirework, 100);
+        }
+      }, 1400);
+    }
+
+    // ----- user interaction (tap) -----
+    function handleTap(e) {
+      e.preventDefault();
+      const rect = canvas.getBoundingClientRect();
+      let clientX, clientY;
+      if (e.touches) {
+        clientX = e.touches[0].clientX;
+        clientY = e.touches[0].clientY;
+        e.preventDefault();
+      } else {
+        clientX = e.clientX;
+        clientY = e.clientY;
+      }
+      const cssX = Math.min(Math.max(clientX - rect.left, 10), rect.width - 10);
+      const cssY = Math.min(Math.max(clientY - rect.top, 10), rect.height - 10);
+      const pal = randomPalette();
+      burstFirework(cssX, cssY, pal, 80 + Math.floor(Math.random() * 40));
+      for (let i=0; i<2; i++) {
+        setTimeout(() => {
+          miniBurst(cssX + rand(-20,20), cssY + rand(-20,20), 15);
+        }, 60 + i*80);
+      }
+      setTimeout(() => {
+        miniBurst(cssX + rand(-30,30), cssY + rand(-10,10), 10);
+      }, 150);
+    }
+
+    canvas.addEventListener('click', handleTap);
+    canvas.addEventListener('touchstart', handleTap, { passive: false });
+    canvas.addEventListener('contextmenu', (e) => e.preventDefault());
+
+    // ----- start -----
+    spawnInitialBursts();
+    startAutoFireworks();
+
+    setTimeout(() => spawnRandomFirework(), 600);
+    setTimeout(() => spawnRandomFirework(), 1200);
+
+    // ----- SHOW MESSAGE after 10 seconds (fireworks continue) -----
+    const MESSAGE_DELAY = 10000; // 10 seconds
+    setTimeout(() => {
+      showBirthdayMessage();
+      // celebratory burst
+      const cssW = canvas._cssWidth || canvas.width;
+      const cssH = canvas._cssHeight || canvas.height;
+      const cx = cssW / 2;
+      const cy = cssH * 0.4;
+      burstFirework(cx - 30, cy - 20, palettes[2], 90);
+      burstFirework(cx + 40, cy + 10, palettes[5], 80);
+      burstFirework(cx, cy - 50, palettes[7], 70);
+      setTimeout(() => {
+        miniBurst(cx + 50, cy - 30, 25);
+        miniBurst(cx - 50, cy + 20, 22);
+      }, 200);
+    }, MESSAGE_DELAY);
+
+    document.addEventListener('visibilitychange', () => {
+      if (document.hidden) {
+        if (autoInterval) clearInterval(autoInterval);
+      } else {
+        startAutoFireworks();
+      }
+    });
+
+    window.addEventListener('beforeunload', () => {
+      if (autoInterval) clearInterval(autoInterval);
+    });
+
+    draw();
+
+  })();
+</script>
+</body>
 </html>
