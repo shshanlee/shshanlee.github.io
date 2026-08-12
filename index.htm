@@ -12,29 +12,189 @@
     }
 
     body {
-      background: #0a0f1e;
+      background: #ffffff;
       min-height: 100vh;
       min-height: 100dvh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Segoe UI', 'Poppins', system-ui, -apple-system, sans-serif;
+      touch-action: pan-y;
+      overflow: hidden;
+      padding: 12px;
+      transition: background 0.8s ease;
+    }
+
+    body.fireworks-mode {
+      background: #1a0e14;
+    }
+
+    /* ----- CARD STAGE (girlish design) ----- */
+    .card-stage {
+      position: relative;
+      width: 100%;
+      max-width: 500px;
+      aspect-ratio: 1 / 1.2;
+      border-radius: 36px;
+      background: linear-gradient(145deg, #ffe4ec, #ffd6e0, #ffc8d6);
+      box-shadow: 0 30px 60px rgba(255, 105, 180, 0.25), 0 0 0 2px rgba(255, 182, 193, 0.3) inset, 0 0 40px rgba(255, 182, 193, 0.15);
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      font-family: 'Segoe UI', 'Poppins', system-ui, -apple-system, sans-serif;
-      touch-action: pan-y;  
-      overflow: hidden;
+      cursor: pointer;
+      transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.4s ease, opacity 0.6s ease, transform 0.6s ease;
+      z-index: 20;
+      padding: 30px;
+      text-align: center;
+      user-select: none;
+      -webkit-tap-highlight-color: transparent;
     }
 
+    .card-stage:hover {
+      transform: scale(1.02);
+      box-shadow: 0 35px 70px rgba(255, 105, 180, 0.35), 0 0 0 3px rgba(255, 182, 193, 0.4) inset, 0 0 60px rgba(255, 182, 193, 0.2);
+    }
+
+    .card-stage:active {
+      transform: scale(0.96);
+    }
+
+    .card-stage::before {
+      content: '';
+      position: absolute;
+      inset: -3px;
+      border-radius: 39px;
+      padding: 3px;
+      background: conic-gradient(from 0deg, #ffb6c1, #ff69b4, #ffb6c1, #ff69b4, #ffb6c1);
+      -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+      -webkit-mask-composite: xor;
+      mask-composite: exclude;
+      pointer-events: none;
+      opacity: 0.5;
+    }
+
+    .card-stage::after {
+      content: '✨✨✨';
+      position: absolute;
+      top: 15px;
+      right: 20px;
+      font-size: 1.2rem;
+      opacity: 0.3;
+      letter-spacing: 8px;
+      pointer-events: none;
+    }
+
+    .card-stage .card-content {
+      position: relative;
+      z-index: 2;
+    }
+
+    .card-stage .card-title {
+      font-size: clamp(2.8rem, 14vw, 5rem);
+      font-weight: 700;
+      background: linear-gradient(135deg, #ff6b9d, #ff4d7a, #e8436e);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      filter: drop-shadow(0 4px 20px rgba(255, 105, 180, 0.3));
+      letter-spacing: 0.04em;
+      line-height: 1.1;
+    }
+
+    .card-stage .card-sub {
+      font-size: clamp(1.2rem, 5vw, 2rem);
+      color: #d43f6b;
+      text-shadow: 0 0 30px rgba(255, 105, 180, 0.2);
+      margin-top: 0.3em;
+      letter-spacing: 0.06em;
+      opacity: 0.85;
+      font-weight: 500;
+    }
+
+    .card-stage .card-icon {
+      font-size: clamp(3rem, 12vw, 4.5rem);
+      margin-top: 0.3em;
+      animation: pulseFloat 2.5s ease-in-out infinite;
+      filter: drop-shadow(0 0 20px rgba(255, 105, 180, 0.3));
+    }
+
+    .card-stage .card-hint {
+      position: absolute;
+      bottom: 30px;
+      color: rgba(180, 60, 100, 0.5);
+      font-size: 0.85rem;
+      letter-spacing: 0.08em;
+      animation: pulseGlow 2s infinite alternate;
+      z-index: 2;
+      font-weight: 400;
+    }
+
+    @keyframes pulseFloat {
+      0%, 100% { transform: translateY(0) scale(1); }
+      50% { transform: translateY(-10px) scale(1.05); }
+    }
+
+    @keyframes pulseGlow {
+      0% { opacity: 0.4; transform: scale(1); }
+      100% { opacity: 0.9; transform: scale(1.05); }
+    }
+
+    .card-stage.exit {
+      opacity: 0;
+      transform: scale(0.8) rotate(-5deg);
+      pointer-events: none;
+    }
+
+    /* ----- FIREWORK WRAPPER (girlish background) ----- */
     .firework-wrapper {
       position: relative;
       width: 100%;
       max-width: 500px;
       aspect-ratio: 1 / 1.2;
-      background: radial-gradient(circle at 20% 30%, #162033, #02070e);
+      background: radial-gradient(circle at 30% 20%, #2d1a24, #1a0e14, #0d080a);
       border-radius: 36px;
-      box-shadow: 0 20px 40px rgba(0,0,0,0.7), 0 0 0 1px rgba(255,215,0,0.08) inset;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.7), 0 0 0 2px rgba(255, 182, 193, 0.15) inset;
       overflow: hidden;
       touch-action: none;
-      margin: 12px;
+      display: none;
+      animation: fadeInScale 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+    }
+
+    .firework-wrapper.active {
+      display: block;
+    }
+
+    @keyframes fadeInScale {
+      0% {
+        opacity: 0;
+        transform: scale(0.9);
+      }
+      100% {
+        opacity: 1;
+        transform: scale(1);
+      }
+    }
+
+    /* decorative girlish glow overlay on firework wrapper */
+    .firework-wrapper::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(circle at 20% 30%, rgba(255, 105, 180, 0.08), transparent 60%);
+      pointer-events: none;
+      z-index: 1;
+      border-radius: 36px;
+    }
+
+    .firework-wrapper::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(circle at 80% 70%, rgba(255, 182, 193, 0.06), transparent 50%);
+      pointer-events: none;
+      z-index: 1;
+      border-radius: 36px;
     }
 
     #fireworksCanvas {
@@ -44,152 +204,114 @@
       background: transparent;
       cursor: pointer;
       touch-action: none;
+      position: relative;
+      z-index: 2;
     }
 
-    /* ----- MESSAGE OVERLAY (positioned with flex) ----- */
+    /* ----- MESSAGE OVERLAY (girlish colors) ----- */
     .message-overlay {
       position: absolute;
       inset: 0;
       display: flex;
       flex-direction: column;
-      align-items: flex-start;   /* left align by default */
-      justify-content: center;   /* vertical center for the whole column */
-      pointer-events: none;      /* allow taps to pass to canvas */
+      align-items: center;
+      justify-content: center;
+      pointer-events: none;
       opacity: 0;
       transition: opacity 1.8s ease-in-out;
       padding: 22px 24px;
       z-index: 10;
-      text-shadow: 0 0 30px rgba(255, 200, 100, 0.6), 0 0 60px rgba(255, 100, 0, 0.4);
+      text-shadow: 0 0 30px rgba(255, 105, 180, 0.4), 0 0 60px rgba(255, 50, 100, 0.2);
     }
 
     .message-overlay.show {
       opacity: 1;
     }
 
-    /* ---- TOP LEFT: Shan (same size as Hin) ---- */
     .message-overlay .top-left {
-      align-self: flex-start;
-      font-size: clamp(1.8rem, 10vw, 3.2rem);
-      font-weight: 700;
-      letter-spacing: 0.04em;
-      background: linear-gradient(135deg, #ffe28c, #ffb347, #ff8a5c);
-      -webkit-background-clip: text;
-      background-clip: text;
-      color: transparent;
-      filter: drop-shadow(0 4px 20px rgba(255, 160, 50, 0.6));
-      line-height: 1.1;
-      margin-top: 0;
-      margin-left: 0;
       position: absolute;
       top: 22px;
       left: 24px;
-    }
-
-    /* ---- CENTER: Happy birthday (vertically centered) ---- */
-    .message-overlay .center-happy {
-      align-self: center;
-      font-size: clamp(1.3rem, 6.5vw, 2.4rem);
+      font-size: clamp(1.8rem, 10vw, 3.2rem);
       font-weight: 700;
-      text-align: center;
-      background: linear-gradient(135deg, #ffe6b3, #ffcc88, #ffb366);
+      letter-spacing: 0.04em;
+      background: linear-gradient(135deg, #ffb6c1, #ff69b4, #ff4d7a);
       -webkit-background-clip: text;
       background-clip: text;
       color: transparent;
-      filter: drop-shadow(0 0 30px #ffaa33);
-      letter-spacing: 0.06em;
-      text-shadow: 0 0 30px rgba(255, 170, 50, 0.5);
-      line-height: 1.2;
-      white-space: nowrap;      /* force one row */
-      /* vertically centered via flex parent (justify-content: center) */
-      margin: 0;               /* remove auto margin */
+      filter: drop-shadow(0 4px 20px rgba(255, 105, 180, 0.5));
+      line-height: 1.1;
     }
 
-    /* ---- BOTTOM RIGHT: Hin + date ---- */
+    .message-overlay .center-happy {
+      font-size: clamp(1.3rem, 6.5vw, 2.4rem);
+      font-weight: 700;
+      text-align: center;
+      background: linear-gradient(135deg, #ffd6e0, #ffb6c1, #ff8da1);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      filter: drop-shadow(0 0 30px rgba(255, 105, 180, 0.4));
+      letter-spacing: 0.06em;
+      line-height: 1.2;
+      white-space: nowrap;
+      margin: 0;
+    }
+
     .message-overlay .bottom-right {
-      align-self: flex-end;
+      position: absolute;
+      bottom: 22px;
+      right: 24px;
       text-align: right;
       display: flex;
       flex-direction: column;
       align-items: flex-end;
       line-height: 1.2;
-      position: absolute;
-      bottom: 22px;
-      right: 24px;
     }
 
     .message-overlay .bottom-right .hin-name {
       font-size: clamp(1.8rem, 10vw, 3.2rem);
       font-weight: 700;
-      background: linear-gradient(135deg, #fce9c0, #ffd699, #ffb86b);
+      background: linear-gradient(135deg, #ffb6c1, #ff69b4, #ff4d7a);
       -webkit-background-clip: text;
       background-clip: text;
       color: transparent;
-      filter: drop-shadow(0 0 25px #ff8800);
+      filter: drop-shadow(0 0 25px rgba(255, 105, 180, 0.5));
       letter-spacing: 0.04em;
     }
 
     .message-overlay .bottom-right .date {
       font-size: clamp(1.1rem, 5vw, 1.9rem);
       font-weight: 400;
-      background: linear-gradient(135deg, #ffddbb, #ffb377);
+      background: linear-gradient(135deg, #ffd6e0, #ffb6c1);
       -webkit-background-clip: text;
       background-clip: text;
       color: transparent;
-      filter: drop-shadow(0 0 18px #ff8800);
+      filter: drop-shadow(0 0 18px rgba(255, 105, 180, 0.3));
       letter-spacing: 0.1em;
       margin-top: -0.1em;
       opacity: 0.95;
     }
 
-    /* subtle glow behind text (optional) */
     .message-overlay::before {
       content: '';
       position: absolute;
       inset: 0;
-      background: radial-gradient(circle at 20% 20%, rgba(255,215,0,0.05), transparent 50%);
+      background: radial-gradient(circle at 30% 30%, rgba(255, 105, 180, 0.05), transparent 60%);
       pointer-events: none;
-    }
-
-    .info {
-      margin-top: 8px;
-      color: rgba(255, 255, 200, 0.5);
-      font-size: 0.85rem;
-      letter-spacing: 0.03em;
-      text-align: center;
-      background: rgba(0,0,0,0.3);
-      padding: 10px 18px;
-      border-radius: 60px;
-      backdrop-filter: blur(4px);
-      border: 1px solid rgba(255,215,0,0.1);
-      max-width: 320px;
-      width: fit-content;
-      margin-left: auto;
-      margin-right: auto;
-      user-select: none;
-      pointer-events: none;
-      transition: opacity 0.5s;
-    }
-
-    .info span {
-      display: inline-block;
-      animation: pulseGlow 2s infinite alternate;
-    }
-
-    @keyframes pulseGlow {
-      0% { opacity: 0.5; text-shadow: 0 0 2px #ffaa33; }
-      100% { opacity: 1; text-shadow: 0 0 12px #ffbb44, 0 0 20px #ff8800; }
     }
 
     @media (max-width: 420px) {
-      .firework-wrapper {
+      .card-stage, .firework-wrapper {
         border-radius: 24px;
-        margin: 8px;
         aspect-ratio: 1 / 1.3;
       }
-      .info {
+      .card-stage {
+        padding: 20px;
+      }
+      .card-stage .card-hint {
+        bottom: 20px;
         font-size: 0.7rem;
-        padding: 6px 14px;
-        max-width: 240px;
       }
       .message-overlay {
         padding: 16px 18px;
@@ -202,10 +324,15 @@
         bottom: 16px;
         right: 18px;
       }
+      .card-stage::after {
+        font-size: 0.8rem;
+        top: 10px;
+        right: 14px;
+      }
     }
 
     @media (orientation: landscape) and (max-height: 500px) {
-      .firework-wrapper {
+      .card-stage, .firework-wrapper {
         max-width: 70vh;
         aspect-ratio: 1 / 1.1;
       }
@@ -213,30 +340,86 @@
   </style>
 </head>
 <body>
-<div class="firework-wrapper">
-  <canvas id="fireworksCanvas"></canvas>
+  <!-- CARD STAGE -->
+  <div class="card-stage" id="cardStage">
+    <div class="card-content">
+      <div class="card-title">Shan</div>
+      <div class="card-sub">✨ Happy birthday ✨</div>
+      <div class="card-icon">🎂</div>
+    </div>
+    <div class="card-hint">👆 tap to open</div>
+  </div>
 
-  <!-- Message overlay: Shan top-left · Happy birthday center (vertically centered) · Hin + date bottom-right -->
-  <div class="message-overlay" id="messageOverlay">
-    <div class="top-left">Shan</div>
-    <div class="center-happy">✨ Happy birthday ✨</div>
-    <div class="bottom-right">
-      <span class="hin-name">Hin</span>
-      <span class="date">13 Aug 2026</span>
+  <!-- FIREWORK WRAPPER (girlish background) -->
+  <div class="firework-wrapper" id="fireworkWrapper">
+    <canvas id="fireworksCanvas"></canvas>
+    <div class="message-overlay" id="messageOverlay">
+      <div class="top-left">Shan</div>
+      <div class="center-happy">✨ Happy birthday ✨</div>
+      <div class="bottom-right">
+        <span class="hin-name">Hin</span>
+        <span class="date">13 Aug 2026</span>
+      </div>
     </div>
   </div>
-</div>
-<div class="info"><span>✨ tap · burst · sparkle ✨</span></div>
 
 <script>
   (function(){
-    // ----- canvas & overlay -----
+    // ----- DOM refs -----
+    const cardStage = document.getElementById('cardStage');
+    const fireworkWrapper = document.getElementById('fireworkWrapper');
+    const overlay = document.getElementById('messageOverlay');
     const canvas = document.getElementById('fireworksCanvas');
     const ctx = canvas.getContext('2d');
-    const overlay = document.getElementById('messageOverlay');
+    const body = document.body;
 
+    let fireworksActive = false;
     let width, height;
+    let particles = [];
+    let autoInterval = null;
+    let messageShown = false;
 
+    // ----- CARD CLICK: transition to firework mode -----
+    cardStage.addEventListener('click', function openCard(e) {
+      if (fireworksActive) return;
+      fireworksActive = true;
+
+      // card exit animation
+      cardStage.classList.add('exit');
+
+      // change body background to dark
+      body.classList.add('fireworks-mode');
+
+      setTimeout(() => {
+        cardStage.style.display = 'none';
+        fireworkWrapper.classList.add('active');
+        // init canvas after display
+        resizeCanvas();
+        spawnInitialBursts();
+        startAutoFireworks();
+        draw();
+
+        // show message after delay
+        setTimeout(() => {
+          showBirthdayMessage();
+          // celebratory burst with girlish colors
+          const cssW = canvas._cssWidth || canvas.width;
+          const cssH = canvas._cssHeight || canvas.height;
+          const cx = cssW / 2;
+          const cy = cssH * 0.4;
+          const girlishPalette = ['#ff6b9d', '#ff4d7a', '#ff85b3', '#ffb6c1', '#ff69b4', '#ff8da1'];
+          burstFirework(cx - 30, cy - 20, girlishPalette, 90);
+          burstFirework(cx + 40, cy + 10, girlishPalette, 80);
+          burstFirework(cx, cy - 50, girlishPalette, 70);
+          setTimeout(() => {
+            miniBurst(cx + 50, cy - 30, 25);
+            miniBurst(cx - 50, cy + 20, 22);
+          }, 200);
+        }, 3000);
+      }, 600);
+    });
+
+    // ----- canvas resize -----
     function resizeCanvas() {
       const rect = canvas.parentElement.getBoundingClientRect();
       const dpr = window.devicePixelRatio || 1;
@@ -253,29 +436,28 @@
       canvas._cssHeight = cssHeight;
     }
 
-    resizeCanvas();
     window.addEventListener('resize', () => {
-      resizeCanvas();
+      if (fireworksActive) {
+        resizeCanvas();
+      }
     });
 
-    // ----- particle system (CSS pixel coords) -----
-    const particles = [];
+    // ----- particle system with girlish palettes -----
     const MAX_PARTICLES = 700;
     const GRAVITY = 0.035;
     const EXPLOSION_SPEED = 4.8;
     const SPARKLE_CHANCE = 0.3;
-
     const rand = (min, max) => Math.random() * (max - min) + min;
 
     const palettes = [
-      ['#ff4d6d', '#ff8c9e', '#ffb3c1', '#ffd9e0'],
+      ['#ff6b9d', '#ff4d7a', '#ff85b3', '#ffb6c1', '#ff69b4'],
+      ['#ffb6c1', '#ff69b4', '#ff4d7a', '#ff8da1', '#ffb3c1'],
+      ['#ff85b3', '#ffb6c1', '#ff4d7a', '#ff6b9d', '#ffa5b9'],
+      ['#ff69b4', '#ff4d7a', '#ffb6c1', '#ff85b3', '#ff8da1'],
       ['#ffb347', '#ffa500', '#ffcc66', '#ffe699'],
-      ['#6a5acd', '#8b7ae6', '#b5a6f0', '#d4c8ff'],
       ['#00b4d8', '#48cae4', '#90e0ef', '#caf0f8'],
       ['#06d6a0', '#2ee6b0', '#7cf5c6', '#baf8dc'],
-      ['#ff006e', '#ff4d8f', '#ff85b3', '#ffb8d0'],
       ['#f9c74f', '#f9d371', '#fae588', '#fcf2b0'],
-      ['#9b5de5', '#b77cf2', '#d4a6f7', '#e8ccff'],
     ];
 
     function randomPalette() {
@@ -351,49 +533,48 @@
       const cssH = canvas._cssHeight || canvas.height;
       const midX = cssW / 2;
       const midY = cssH * 0.45;
-      burstFirework(midX - 40, midY - 30, palettes[0], 65);
-      burstFirework(midX + 50, midY + 10, palettes[3], 70);
-      burstFirework(midX - 10, midY - 70, palettes[6], 55);
+      const girlish = ['#ff6b9d', '#ff4d7a', '#ff85b3', '#ffb6c1'];
+      burstFirework(midX - 40, midY - 30, girlish, 65);
+      burstFirework(midX + 50, midY + 10, girlish, 70);
+      burstFirework(midX - 10, midY - 70, girlish, 55);
       setTimeout(() => {
         miniBurst(midX + 70, midY - 50, 20);
         miniBurst(midX - 70, midY + 20, 18);
       }, 200);
     }
 
-    // ----- SHOW MESSAGE after a delay -----
-    let messageShown = false;
-
     function showBirthdayMessage() {
       if (messageShown) return;
       messageShown = true;
       overlay.classList.add('show');
-      const infoEl = document.querySelector('.info');
-      if (infoEl) {
-        infoEl.style.opacity = '0.3';
-        infoEl.style.transition = 'opacity 1.5s';
-      }
     }
 
     // ----- animation loop -----
     function draw() {
+      if (!fireworksActive) return;
       const cssW = canvas._cssWidth || canvas.width;
       const cssH = canvas._cssHeight || canvas.height;
 
       ctx.clearRect(0, 0, cssW, cssH);
 
-      // faint stars
-      ctx.fillStyle = 'rgba(255,255,240,0.04)';
-      for (let i=0; i<25; i++) {
-        if (i%2===0) continue;
+      // faint stars with pinkish tint
+      for (let i=0; i<30; i++) {
         const sx = (i*37 + 13) % cssW;
         const sy = (i*53 + 7) % cssH;
         ctx.beginPath();
-        ctx.arc(sx, sy, 0.6 + i%3, 0, Math.PI*2);
-        ctx.fillStyle = `rgba(255,240,200,${0.1 + (i%5)*0.04})`;
+        ctx.arc(sx, sy, 0.4 + (i%4)*0.2, 0, Math.PI*2);
+        const pinkness = 0.1 + (i%5)*0.05;
+        ctx.fillStyle = `rgba(255, 182, 193, ${pinkness * 0.5})`;
         ctx.fill();
+        // add some tiny sparkles
+        if (i % 3 === 0) {
+          ctx.fillStyle = `rgba(255, 200, 210, ${pinkness * 0.3})`;
+          ctx.beginPath();
+          ctx.arc(sx + 5, sy - 3, 0.3, 0, Math.PI*2);
+          ctx.fill();
+        }
       }
 
-      // particles
       for (let i = particles.length - 1; i >= 0; i--) {
         const p = particles[i];
         p.vx *= 0.99;
@@ -409,36 +590,40 @@
         const alpha = Math.min(p.life / p.maxLife * 1.2, 1.0);
         const size = p.size * (0.3 + 0.7 * (p.life / p.maxLife));
 
-        // glow
-        const grad = ctx.createRadialGradient(p.x, p.y, 0, p.x, p.y, size * 2.6);
-        grad.addColorStop(0, p.color + 'dd');
-        grad.addColorStop(0.4, p.color + '99');
+        const grad = ctx.createRadialGradient(p.x, p.y, 0, p.x, p.y, size * 2.8);
+        grad.addColorStop(0, p.color + 'ee');
+        grad.addColorStop(0.3, p.color + 'aa');
         grad.addColorStop(1, p.color + '00');
-        ctx.globalAlpha = alpha * 0.6;
+        ctx.globalAlpha = alpha * 0.7;
         ctx.beginPath();
-        ctx.arc(p.x, p.y, size * 2.6, 0, Math.PI * 2);
+        ctx.arc(p.x, p.y, size * 2.8, 0, Math.PI * 2);
         ctx.fillStyle = grad;
         ctx.fill();
 
-        // main dot
         ctx.globalAlpha = alpha * 0.95;
         ctx.beginPath();
         ctx.arc(p.x, p.y, size * 0.7, 0, Math.PI * 2);
         ctx.fillStyle = p.color;
         ctx.fill();
 
+        // sparkle with pinkish glow
         if (p.sparkle && p.life > 0.3) {
-          ctx.globalAlpha = alpha * 0.5;
-          ctx.fillStyle = '#fff9e6';
+          ctx.globalAlpha = alpha * 0.6;
+          ctx.fillStyle = '#fff0f5';
           ctx.beginPath();
-          ctx.arc(p.x - size*0.3, p.y - size*0.4, size * 0.2, 0, Math.PI*2);
+          ctx.arc(p.x - size*0.4, p.y - size*0.4, size * 0.25, 0, Math.PI*2);
           ctx.fill();
           ctx.beginPath();
-          ctx.arc(p.x + size*0.3, p.y + size*0.2, size * 0.15, 0, Math.PI*2);
+          ctx.arc(p.x + size*0.4, p.y + size*0.3, size * 0.2, 0, Math.PI*2);
           ctx.fill();
-          ctx.fillStyle = '#ffdd99';
+          ctx.fillStyle = '#ffd6e0';
           ctx.beginPath();
-          ctx.arc(p.x - size*0.2, p.y + size*0.5, size * 0.1, 0, Math.PI*2);
+          ctx.arc(p.x - size*0.2, p.y + size*0.6, size * 0.15, 0, Math.PI*2);
+          ctx.fill();
+          // extra sparkle
+          ctx.fillStyle = '#ffb6c1';
+          ctx.beginPath();
+          ctx.arc(p.x + size*0.2, p.y - size*0.5, size * 0.1, 0, Math.PI*2);
           ctx.fill();
         }
         ctx.globalAlpha = 1.0;
@@ -448,11 +633,10 @@
     }
 
     // ----- auto firework interval -----
-    let autoInterval;
-
     function startAutoFireworks() {
       if (autoInterval) clearInterval(autoInterval);
       autoInterval = setInterval(() => {
+        if (!fireworksActive) return;
         spawnRandomFirework();
         if (Math.random() > 0.7) {
           setTimeout(spawnRandomFirework, 100);
@@ -460,8 +644,9 @@
       }, 1400);
     }
 
-    // ----- user interaction (tap) -----
+    // ----- user interaction (tap on canvas) -----
     function handleTap(e) {
+      if (!fireworksActive) return;
       e.preventDefault();
       const rect = canvas.getBoundingClientRect();
       let clientX, clientY;
@@ -491,35 +676,11 @@
     canvas.addEventListener('touchstart', handleTap, { passive: false });
     canvas.addEventListener('contextmenu', (e) => e.preventDefault());
 
-    // ----- start -----
-    spawnInitialBursts();
-    startAutoFireworks();
-
-    setTimeout(() => spawnRandomFirework(), 600);
-    setTimeout(() => spawnRandomFirework(), 1200);
-
-    // ----- SHOW MESSAGE after 10 seconds (fireworks continue) -----
-    const MESSAGE_DELAY = 10000; // 10 seconds
-    setTimeout(() => {
-      showBirthdayMessage();
-      // celebratory burst
-      const cssW = canvas._cssWidth || canvas.width;
-      const cssH = canvas._cssHeight || canvas.height;
-      const cx = cssW / 2;
-      const cy = cssH * 0.4;
-      burstFirework(cx - 30, cy - 20, palettes[2], 90);
-      burstFirework(cx + 40, cy + 10, palettes[5], 80);
-      burstFirework(cx, cy - 50, palettes[7], 70);
-      setTimeout(() => {
-        miniBurst(cx + 50, cy - 30, 25);
-        miniBurst(cx - 50, cy + 20, 22);
-      }, 200);
-    }, MESSAGE_DELAY);
-
+    // ----- cleanup -----
     document.addEventListener('visibilitychange', () => {
       if (document.hidden) {
         if (autoInterval) clearInterval(autoInterval);
-      } else {
+      } else if (fireworksActive) {
         startAutoFireworks();
       }
     });
@@ -527,8 +688,6 @@
     window.addEventListener('beforeunload', () => {
       if (autoInterval) clearInterval(autoInterval);
     });
-
-    draw();
 
   })();
 </script>
