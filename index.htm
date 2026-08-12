@@ -12,13 +12,13 @@
     }
 
     body {
-      background: #ffffff;
+      background: #fdf6f0;
       min-height: 100vh;
       min-height: 100dvh;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-family: 'Segoe UI', 'Poppins', system-ui, -apple-system, sans-serif;
+      font-family: 'Segoe UI', 'Poppins', 'Hiragino Sans', 'Yu Gothic', system-ui, -apple-system, sans-serif;
       touch-action: pan-y;
       overflow: hidden;
       padding: 12px;
@@ -29,15 +29,15 @@
       background: #1a0e14;
     }
 
-    /* ----- CARD STAGE (girlish design) ----- */
+    /* ----- CARD STAGE (Japanese girlish design) ----- */
     .card-stage {
       position: relative;
       width: 100%;
       max-width: 500px;
       aspect-ratio: 1 / 1.2;
       border-radius: 36px;
-      background: linear-gradient(145deg, #ffe4ec, #ffd6e0, #ffc8d6);
-      box-shadow: 0 30px 60px rgba(255, 105, 180, 0.25), 0 0 0 2px rgba(255, 182, 193, 0.3) inset, 0 0 40px rgba(255, 182, 193, 0.15);
+      background: linear-gradient(145deg, #fce4ec, #f8d7e0, #f5c8d6);
+      box-shadow: 0 30px 60px rgba(255, 105, 180, 0.2), 0 0 0 2px rgba(255, 182, 193, 0.25) inset, 0 0 40px rgba(255, 182, 193, 0.1);
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -49,40 +49,47 @@
       text-align: center;
       user-select: none;
       -webkit-tap-highlight-color: transparent;
+      overflow: hidden;
+    }
+
+    /* Japanese floral pattern overlay */
+    .card-stage::before {
+      content: '🌸🌺🌸🌺🌸🌺🌸🌺';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      font-size: 2.5rem;
+      letter-spacing: 20px;
+      word-break: break-all;
+      opacity: 0.06;
+      pointer-events: none;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+      line-height: 2.5;
+      z-index: 0;
     }
 
     .card-stage:hover {
       transform: scale(1.02);
-      box-shadow: 0 35px 70px rgba(255, 105, 180, 0.35), 0 0 0 3px rgba(255, 182, 193, 0.4) inset, 0 0 60px rgba(255, 182, 193, 0.2);
+      box-shadow: 0 35px 70px rgba(255, 105, 180, 0.3), 0 0 0 3px rgba(255, 182, 193, 0.35) inset, 0 0 60px rgba(255, 182, 193, 0.15);
     }
 
     .card-stage:active {
       transform: scale(0.96);
     }
 
-    .card-stage::before {
-      content: '';
+    .card-stage .card-border {
       position: absolute;
-      inset: -3px;
-      border-radius: 39px;
-      padding: 3px;
-      background: conic-gradient(from 0deg, #ffb6c1, #ff69b4, #ffb6c1, #ff69b4, #ffb6c1);
-      -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-      -webkit-mask-composite: xor;
-      mask-composite: exclude;
+      inset: 8px;
+      border-radius: 28px;
+      border: 2px dashed rgba(255, 105, 180, 0.2);
       pointer-events: none;
-      opacity: 0.5;
-    }
-
-    .card-stage::after {
-      content: '✨✨✨';
-      position: absolute;
-      top: 15px;
-      right: 20px;
-      font-size: 1.2rem;
-      opacity: 0.3;
-      letter-spacing: 8px;
-      pointer-events: none;
+      z-index: 1;
     }
 
     .card-stage .card-content {
@@ -98,16 +105,17 @@
       background-clip: text;
       color: transparent;
       filter: drop-shadow(0 4px 20px rgba(255, 105, 180, 0.3));
-      letter-spacing: 0.04em;
+      letter-spacing: 0.08em;
       line-height: 1.1;
+      font-family: 'Hiragino Sans', 'Yu Gothic', sans-serif;
     }
 
     .card-stage .card-sub {
       font-size: clamp(1.2rem, 5vw, 2rem);
       color: #d43f6b;
-      text-shadow: 0 0 30px rgba(255, 105, 180, 0.2);
+      text-shadow: 0 0 30px rgba(255, 105, 180, 0.15);
       margin-top: 0.3em;
-      letter-spacing: 0.06em;
+      letter-spacing: 0.08em;
       opacity: 0.85;
       font-weight: 500;
     }
@@ -116,18 +124,26 @@
       font-size: clamp(3rem, 12vw, 4.5rem);
       margin-top: 0.3em;
       animation: pulseFloat 2.5s ease-in-out infinite;
-      filter: drop-shadow(0 0 20px rgba(255, 105, 180, 0.3));
+      filter: drop-shadow(0 0 20px rgba(255, 105, 180, 0.2));
     }
 
     .card-stage .card-hint {
       position: absolute;
       bottom: 30px;
-      color: rgba(180, 60, 100, 0.5);
+      color: rgba(180, 60, 100, 0.4);
       font-size: 0.85rem;
       letter-spacing: 0.08em;
       animation: pulseGlow 2s infinite alternate;
       z-index: 2;
       font-weight: 400;
+      font-family: 'Hiragino Sans', 'Yu Gothic', sans-serif;
+    }
+
+    .card-stage .card-hint::before {
+      content: '🌸 ';
+    }
+    .card-stage .card-hint::after {
+      content: ' 🌸';
     }
 
     @keyframes pulseFloat {
@@ -146,7 +162,7 @@
       pointer-events: none;
     }
 
-    /* ----- FIREWORK WRAPPER (girlish background) ----- */
+    /* ----- FIREWORK WRAPPER (Japanese girlish background) ----- */
     .firework-wrapper {
       position: relative;
       width: 100%;
@@ -154,7 +170,7 @@
       aspect-ratio: 1 / 1.2;
       background: radial-gradient(circle at 30% 20%, #2d1a24, #1a0e14, #0d080a);
       border-radius: 36px;
-      box-shadow: 0 20px 40px rgba(0,0,0,0.7), 0 0 0 2px rgba(255, 182, 193, 0.15) inset;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.7), 0 0 0 2px rgba(255, 182, 193, 0.12) inset;
       overflow: hidden;
       touch-action: none;
       display: none;
@@ -176,21 +192,32 @@
       }
     }
 
+    /* Japanese pattern overlay on fireworks */
     .firework-wrapper::before {
-      content: '';
+      content: '🌸🌸🌸🌸🌸🌸🌸🌸🌸🌸🌸🌸🌸🌸🌸🌸🌸🌸🌸🌸';
       position: absolute;
       inset: 0;
-      background: radial-gradient(circle at 20% 30%, rgba(255, 105, 180, 0.08), transparent 60%);
+      font-size: 1.8rem;
+      letter-spacing: 30px;
+      word-break: break-all;
+      opacity: 0.03;
       pointer-events: none;
       z-index: 1;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+      line-height: 3;
       border-radius: 36px;
+      overflow: hidden;
     }
 
     .firework-wrapper::after {
       content: '';
       position: absolute;
       inset: 0;
-      background: radial-gradient(circle at 80% 70%, rgba(255, 182, 193, 0.06), transparent 50%);
+      background: radial-gradient(circle at 20% 30%, rgba(255, 105, 180, 0.06), transparent 60%);
       pointer-events: none;
       z-index: 1;
       border-radius: 36px;
@@ -207,7 +234,7 @@
       z-index: 2;
     }
 
-    /* ----- MESSAGE OVERLAY (girlish colors) ----- */
+    /* ----- MESSAGE OVERLAY (Japanese girlish colors) ----- */
     .message-overlay {
       position: absolute;
       inset: 0;
@@ -220,7 +247,7 @@
       transition: opacity 1.8s ease-in-out;
       padding: 22px 24px;
       z-index: 10;
-      text-shadow: 0 0 30px rgba(255, 105, 180, 0.4), 0 0 60px rgba(255, 50, 100, 0.2);
+      text-shadow: 0 0 30px rgba(255, 105, 180, 0.3), 0 0 60px rgba(255, 50, 100, 0.15);
     }
 
     .message-overlay.show {
@@ -233,13 +260,14 @@
       left: 24px;
       font-size: clamp(1.8rem, 10vw, 3.2rem);
       font-weight: 700;
-      letter-spacing: 0.04em;
+      letter-spacing: 0.08em;
       background: linear-gradient(135deg, #ffb6c1, #ff69b4, #ff4d7a);
       -webkit-background-clip: text;
       background-clip: text;
       color: transparent;
-      filter: drop-shadow(0 4px 20px rgba(255, 105, 180, 0.5));
+      filter: drop-shadow(0 4px 20px rgba(255, 105, 180, 0.4));
       line-height: 1.1;
+      font-family: 'Hiragino Sans', 'Yu Gothic', sans-serif;
     }
 
     .message-overlay .center-happy {
@@ -250,11 +278,12 @@
       -webkit-background-clip: text;
       background-clip: text;
       color: transparent;
-      filter: drop-shadow(0 0 30px rgba(255, 105, 180, 0.4));
-      letter-spacing: 0.06em;
+      filter: drop-shadow(0 0 30px rgba(255, 105, 180, 0.3));
+      letter-spacing: 0.08em;
       line-height: 1.2;
       white-space: nowrap;
       margin: 0;
+      font-family: 'Hiragino Sans', 'Yu Gothic', sans-serif;
     }
 
     .message-overlay .bottom-right {
@@ -275,8 +304,9 @@
       -webkit-background-clip: text;
       background-clip: text;
       color: transparent;
-      filter: drop-shadow(0 0 25px rgba(255, 105, 180, 0.5));
-      letter-spacing: 0.04em;
+      filter: drop-shadow(0 0 25px rgba(255, 105, 180, 0.4));
+      letter-spacing: 0.08em;
+      font-family: 'Hiragino Sans', 'Yu Gothic', sans-serif;
     }
 
     .message-overlay .bottom-right .date {
@@ -286,17 +316,32 @@
       -webkit-background-clip: text;
       background-clip: text;
       color: transparent;
-      filter: drop-shadow(0 0 18px rgba(255, 105, 180, 0.3));
-      letter-spacing: 0.1em;
+      filter: drop-shadow(0 0 18px rgba(255, 105, 180, 0.2));
+      letter-spacing: 0.12em;
       margin-top: -0.1em;
       opacity: 0.95;
+      font-family: 'Hiragino Sans', 'Yu Gothic', sans-serif;
     }
 
     .message-overlay::before {
-      content: '';
+      content: '🌸';
       position: absolute;
-      inset: 0;
-      background: radial-gradient(circle at 30% 30%, rgba(255, 105, 180, 0.05), transparent 60%);
+      top: 50%;
+      left: 15px;
+      transform: translateY(-50%);
+      font-size: 2rem;
+      opacity: 0.1;
+      pointer-events: none;
+    }
+
+    .message-overlay::after {
+      content: '🌸';
+      position: absolute;
+      bottom: 50%;
+      right: 15px;
+      transform: translateY(50%);
+      font-size: 2rem;
+      opacity: 0.1;
       pointer-events: none;
     }
 
@@ -306,17 +351,31 @@
       bottom: 12px;
       left: 50%;
       transform: translateX(-50%);
-      color: rgba(255, 182, 193, 0.3);
+      color: rgba(255, 182, 193, 0.25);
       font-size: 0.6rem;
-      letter-spacing: 0.05em;
+      letter-spacing: 0.08em;
       z-index: 15;
       pointer-events: none;
       opacity: 0;
       transition: opacity 1s ease;
+      font-family: 'Hiragino Sans', 'Yu Gothic', sans-serif;
     }
 
     .audio-hint.show {
       opacity: 1;
+    }
+
+    .audio-hint::before {
+      content: '🎵 ';
+    }
+
+    /* ----- Decorative cute elements ----- */
+    .cute-decoration {
+      position: absolute;
+      font-size: 1.2rem;
+      opacity: 0.15;
+      pointer-events: none;
+      z-index: 1;
     }
 
     @media (max-width: 420px) {
@@ -342,14 +401,23 @@
         bottom: 16px;
         right: 18px;
       }
-      .card-stage::after {
-        font-size: 0.8rem;
-        top: 10px;
-        right: 14px;
+      .card-stage::before {
+        font-size: 1.8rem;
+        letter-spacing: 12px;
+        line-height: 2;
+      }
+      .firework-wrapper::before {
+        font-size: 1.2rem;
+        letter-spacing: 20px;
+        line-height: 2.5;
       }
       .audio-hint {
         font-size: 0.5rem;
         bottom: 8px;
+      }
+      .message-overlay::before,
+      .message-overlay::after {
+        font-size: 1.2rem;
       }
     }
 
@@ -364,12 +432,13 @@
 <body>
   <!-- CARD STAGE -->
   <div class="card-stage" id="cardStage">
+    <div class="card-border"></div>
     <div class="card-content">
       <div class="card-title">Shan</div>
       <div class="card-sub">✨ Happy birthday ✨</div>
       <div class="card-icon">🎂</div>
     </div>
-    <div class="card-hint">👆 tap to open</div>
+    <div class="card-hint">tap to open</div>
   </div>
 
   <!-- FIREWORK WRAPPER -->
@@ -377,18 +446,17 @@
     <canvas id="fireworksCanvas"></canvas>
     <div class="message-overlay" id="messageOverlay">
       <div class="top-left">Shan</div>
-      <div class="center-happy">✨ Happy birthday ✨</div>
+      <div class="center-happy">✨ My Precious ✨</div>
       <div class="bottom-right">
         <span class="hin-name">Hin</span>
         <span class="date">13 Aug 2026</span>
       </div>
     </div>
-    <div class="audio-hint" id="audioHint">🔊 happy birthday melody</div>
+    <div class="audio-hint" id="audioHint">happy birthday melody</div>
   </div>
 
-  <!-- Audio element for "Happy Birthday to You" MIDI -->
+  <!-- Audio element for "Happy Birthday to You" -->
   <audio id="bgMusic" loop preload="auto">
-    <!-- Fallback to a standard MP3 version if MIDI not supported -->
     <source src="./birthday.mp3" type="audio/mpeg">
   </audio>
 
