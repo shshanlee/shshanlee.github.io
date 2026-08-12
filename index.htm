@@ -176,7 +176,6 @@
       }
     }
 
-    /* decorative girlish glow overlay on firework wrapper */
     .firework-wrapper::before {
       content: '';
       position: absolute;
@@ -301,6 +300,25 @@
       pointer-events: none;
     }
 
+    /* ----- Audio control hint ----- */
+    .audio-hint {
+      position: absolute;
+      bottom: 12px;
+      left: 50%;
+      transform: translateX(-50%);
+      color: rgba(255, 182, 193, 0.3);
+      font-size: 0.6rem;
+      letter-spacing: 0.05em;
+      z-index: 15;
+      pointer-events: none;
+      opacity: 0;
+      transition: opacity 1s ease;
+    }
+
+    .audio-hint.show {
+      opacity: 1;
+    }
+
     @media (max-width: 420px) {
       .card-stage, .firework-wrapper {
         border-radius: 24px;
@@ -329,6 +347,10 @@
         top: 10px;
         right: 14px;
       }
+      .audio-hint {
+        font-size: 0.5rem;
+        bottom: 8px;
+      }
     }
 
     @media (orientation: landscape) and (max-height: 500px) {
@@ -350,7 +372,7 @@
     <div class="card-hint">👆 tap to open</div>
   </div>
 
-  <!-- FIREWORK WRAPPER (girlish background) -->
+  <!-- FIREWORK WRAPPER -->
   <div class="firework-wrapper" id="fireworkWrapper">
     <canvas id="fireworksCanvas"></canvas>
     <div class="message-overlay" id="messageOverlay">
@@ -361,7 +383,14 @@
         <span class="date">13 Aug 2026</span>
       </div>
     </div>
+    <div class="audio-hint" id="audioHint">🔊 happy birthday melody</div>
   </div>
+
+  <!-- Audio element for "Happy Birthday to You" MIDI -->
+  <audio id="bgMusic" loop preload="auto">
+    <!-- Fallback to a standard MP3 version if MIDI not supported -->
+    <source src="./birthday.mp3" type="audio/mpeg">
+  </audio>
 
 <script>
   (function(){
@@ -372,12 +401,15 @@
     const canvas = document.getElementById('fireworksCanvas');
     const ctx = canvas.getContext('2d');
     const body = document.body;
+    const audio = document.getElementById('bgMusic');
+    const audioHint = document.getElementById('audioHint');
 
     let fireworksActive = false;
     let width, height;
     let particles = [];
     let autoInterval = null;
     let messageShown = false;
+    let audioStarted = false;
 
     // ----- CARD CLICK: transition to firework mode -----
     cardStage.addEventListener('click', function openCard(e) {
@@ -393,6 +425,10 @@
       setTimeout(() => {
         cardStage.style.display = 'none';
         fireworkWrapper.classList.add('active');
+        
+        // Start background music
+        startAudio();
+        
         // init canvas after display
         resizeCanvas();
         spawnInitialBursts();
@@ -416,7 +452,39 @@
             miniBurst(cx - 50, cy + 20, 22);
           }, 200);
         }, 3000);
+        
+        // show audio hint after a moment
+        setTimeout(() => {
+          audioHint.classList.add('show');
+        }, 1500);
       }, 600);
+    });
+
+    // ----- Audio functions -----
+    function startAudio() {
+      if (audioStarted) return;
+      audioStarted = true;
+      
+      // Try to play audio
+      const playPromise = audio.play();
+      if (playPromise !== undefined) {
+        playPromise.catch(error => {
+          // Auto-play was blocked, try on user interaction
+          console.log('Audio play blocked, will try on tap');
+          // Try again on any tap
+          document.addEventListener('click', function tryPlay() {
+            audio.play().catch(() => {});
+            document.removeEventListener('click', tryPlay);
+          }, { once: true });
+        });
+      }
+    }
+
+    // Also try to play when user taps the canvas (after card is opened)
+    document.addEventListener('click', function tryAudioOnTap() {
+      if (fireworksActive && !audioStarted) {
+        startAudio();
+      }
     });
 
     // ----- canvas resize -----
@@ -566,7 +634,6 @@
         const pinkness = 0.1 + (i%5)*0.05;
         ctx.fillStyle = `rgba(255, 182, 193, ${pinkness * 0.5})`;
         ctx.fill();
-        // add some tiny sparkles
         if (i % 3 === 0) {
           ctx.fillStyle = `rgba(255, 200, 210, ${pinkness * 0.3})`;
           ctx.beginPath();
@@ -606,7 +673,6 @@
         ctx.fillStyle = p.color;
         ctx.fill();
 
-        // sparkle with pinkish glow
         if (p.sparkle && p.life > 0.3) {
           ctx.globalAlpha = alpha * 0.6;
           ctx.fillStyle = '#fff0f5';
@@ -620,7 +686,6 @@
           ctx.beginPath();
           ctx.arc(p.x - size*0.2, p.y + size*0.6, size * 0.15, 0, Math.PI*2);
           ctx.fill();
-          // extra sparkle
           ctx.fillStyle = '#ffb6c1';
           ctx.beginPath();
           ctx.arc(p.x + size*0.2, p.y - size*0.5, size * 0.1, 0, Math.PI*2);
@@ -680,13 +745,16 @@
     document.addEventListener('visibilitychange', () => {
       if (document.hidden) {
         if (autoInterval) clearInterval(autoInterval);
+        if (audioStarted) audio.pause();
       } else if (fireworksActive) {
         startAutoFireworks();
+        if (audioStarted) audio.play().catch(() => {});
       }
     });
 
     window.addEventListener('beforeunload', () => {
       if (autoInterval) clearInterval(autoInterval);
+      if (audioStarted) audio.pause();
     });
 
   })();
