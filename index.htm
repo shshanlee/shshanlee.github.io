@@ -1,831 +1,202 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes, viewport-fit=cover" />
-  <title>🎆 Birthday · Shan & Hin</title>
-  <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes, viewport-fit=cover" />
+    <title>Shan  · 日常</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-    body {
-      background: #fdf6f0;
-      min-height: 100vh;
-      min-height: 100dvh;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-family: 'Segoe UI', 'Poppins', 'Hiragino Sans', 'Yu Gothic', system-ui, -apple-system, sans-serif;
-      touch-action: pan-y;
-      overflow: hidden;
-      padding: 12px;
-      transition: background 0.8s ease;
-    }
+        body {
+            background: #faf8f6;
+            min-height: 100vh;
+            min-height: 100dvh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Segoe UI', 'Poppins', 'Hiragino Sans', 'Yu Gothic', system-ui, -apple-system, sans-serif;
+            padding: 16px;
+            overflow: hidden;
+        }
 
-    body.fireworks-mode {
-      background: #1a0e14;
-    }
+        .container {
+            width: 100%;
+            max-width: 500px;
+            aspect-ratio: 1 / 1.2;
+            border-radius: 36px;
+            background: linear-gradient(145deg, #f5f0ec, #ede6e0, #e8dfd9);
+            box-shadow: 0 20px 50px rgba(0,0,0,0.08), 0 0 0 1px rgba(200, 180, 170, 0.15) inset;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 40px 30px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
 
-    /* ----- CARD STAGE (Japanese girlish design) ----- */
-    .card-stage {
-      position: relative;
-      width: 100%;
-      max-width: 500px;
-      aspect-ratio: 1 / 1.2;
-      border-radius: 36px;
-      background: linear-gradient(145deg, #fce4ec, #f8d7e0, #f5c8d6);
-      box-shadow: 0 30px 60px rgba(255, 105, 180, 0.2), 0 0 0 2px rgba(255, 182, 193, 0.25) inset, 0 0 40px rgba(255, 182, 193, 0.1);
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      cursor: pointer;
-      transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.4s ease, opacity 0.6s ease, transform 0.6s ease;
-      z-index: 20;
-      padding: 30px;
-      text-align: center;
-      user-select: none;
-      -webkit-tap-highlight-color: transparent;
-      overflow: hidden;
-    }
+        .container:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 30px 60px rgba(0,0,0,0.10), 0 0 0 1px rgba(200, 180, 170, 0.2) inset;
+        }
 
-    /* Japanese floral pattern overlay */
-    .card-stage::before {
-      content: '🌸🌺🌸🌺🌸🌺🌸🌺';
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      font-size: 2.5rem;
-      letter-spacing: 20px;
-      word-break: break-all;
-      opacity: 0.06;
-      pointer-events: none;
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-      align-items: center;
-      padding: 20px;
-      line-height: 2.5;
-      z-index: 0;
-    }
+        /* subtle decorative pattern */
+        .container::before {
+            content: '✦ ✦ ✦ ✦ ✦ ✦ ✦ ✦ ✦ ✦';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            font-size: 1.2rem;
+            letter-spacing: 24px;
+            word-break: break-all;
+            opacity: 0.04;
+            pointer-events: none;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            align-items: center;
+            padding: 30px;
+            line-height: 2.8;
+            z-index: 0;
+        }
 
-    .card-stage:hover {
-      transform: scale(1.02);
-      box-shadow: 0 35px 70px rgba(255, 105, 180, 0.3), 0 0 0 3px rgba(255, 182, 193, 0.35) inset, 0 0 60px rgba(255, 182, 193, 0.15);
-    }
+        .container .content {
+            position: relative;
+            z-index: 1;
+        }
 
-    .card-stage:active {
-      transform: scale(0.96);
-    }
+        /* simple divider line */
+        .divider {
+            width: 60px;
+            height: 2px;
+            background: linear-gradient(90deg, #d4c5bc, #b8a69b, #d4c5bc);
+            margin: 16px auto;
+            border-radius: 2px;
+        }
 
-    .card-stage .card-border {
-      position: absolute;
-      inset: 8px;
-      border-radius: 28px;
-      border: 2px dashed rgba(255, 105, 180, 0.2);
-      pointer-events: none;
-      z-index: 1;
-    }
+        .name-group {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
 
-    .card-stage .card-content {
-      position: relative;
-      z-index: 2;
-    }
+        .name {
+            font-size: clamp(2.8rem, 12vw, 4.5rem);
+            font-weight: 300;
+            letter-spacing: 0.06em;
+            color: #5a4a40;
+            font-family: 'Times New Roman', 'Georgia', serif;
+        }
 
-    .card-stage .card-title {
-      font-size: clamp(2.8rem, 14vw, 5rem);
-      font-weight: 700;
-      background: linear-gradient(135deg, #ff6b9d, #ff4d7a, #e8436e);
-      -webkit-background-clip: text;
-      background-clip: text;
-      color: transparent;
-      filter: drop-shadow(0 4px 20px rgba(255, 105, 180, 0.3));
-      letter-spacing: 0.08em;
-      line-height: 1.1;
-      font-family: 'Hiragino Sans', 'Yu Gothic', sans-serif;
-    }
+        .name-ampersand {
+            font-size: clamp(1.8rem, 6vw, 2.8rem);
+            font-weight: 200;
+            color: #b8a69b;
+            font-family: 'Times New Roman', 'Georgia', serif;
+        }
 
-    .card-stage .card-sub {
-      font-size: clamp(1.2rem, 5vw, 2rem);
-      color: #d43f6b;
-      text-shadow: 0 0 30px rgba(255, 105, 180, 0.15);
-      margin-top: 0.3em;
-      letter-spacing: 0.08em;
-      opacity: 0.85;
-      font-weight: 500;
-    }
+        .subtitle {
+            font-size: clamp(1rem, 3.5vw, 1.4rem);
+            font-weight: 300;
+            color: #8a7a70;
+            letter-spacing: 0.12em;
+            margin-top: 4px;
+            font-family: 'Segoe UI', 'Hiragino Sans', sans-serif;
+        }
 
-    .card-stage .card-icon {
-      font-size: clamp(3rem, 12vw, 4.5rem);
-      margin-top: 0.3em;
-      animation: pulseFloat 2.5s ease-in-out infinite;
-      filter: drop-shadow(0 0 20px rgba(255, 105, 180, 0.2));
-    }
+        .date {
+            font-size: clamp(0.85rem, 2.8vw, 1.1rem);
+            font-weight: 300;
+            color: #b0a095;
+            letter-spacing: 0.15em;
+            margin-top: 6px;
+        }
 
-    .card-stage .card-hint {
-      position: absolute;
-      bottom: 30px;
-      color: rgba(180, 60, 100, 0.4);
-      font-size: 0.85rem;
-      letter-spacing: 0.08em;
-      animation: pulseGlow 2s infinite alternate;
-      z-index: 2;
-      font-weight: 400;
-      font-family: 'Hiragino Sans', 'Yu Gothic', sans-serif;
-    }
+        .description {
+            font-size: clamp(0.95rem, 3vw, 1.2rem);
+            font-weight: 300;
+            color: #7a6a60;
+            line-height: 1.7;
+            max-width: 340px;
+            margin: 16px auto 0;
+            letter-spacing: 0.03em;
+        }
 
-    .card-stage .card-hint::before {
-      content: '🌸 ';
-    }
-    .card-stage .card-hint::after {
-      content: ' 🌸';
-    }
+        .description span {
+            display: inline-block;
+            opacity: 0.7;
+        }
 
-    @keyframes pulseFloat {
-      0%, 100% { transform: translateY(0) scale(1); }
-      50% { transform: translateY(-10px) scale(1.05); }
-    }
+        .footer-note {
+            position: absolute;
+            bottom: 28px;
+            font-size: 0.7rem;
+            letter-spacing: 0.08em;
+            color: #c0b0a5;
+            opacity: 0.5;
+            z-index: 1;
+            font-weight: 300;
+        }
 
-    @keyframes pulseGlow {
-      0% { opacity: 0.4; transform: scale(1); }
-      100% { opacity: 0.9; transform: scale(1.05); }
-    }
+        @media (max-width: 420px) {
+            .container {
+                border-radius: 24px;
+                padding: 30px 20px;
+                aspect-ratio: 1 / 1.3;
+            }
+            .container::before {
+                font-size: 0.9rem;
+                letter-spacing: 16px;
+                line-height: 2.2;
+            }
+            .name-group {
+                gap: 12px;
+            }
+            .footer-note {
+                bottom: 20px;
+                font-size: 0.6rem;
+            }
+        }
 
-    .card-stage.exit {
-      opacity: 0;
-      transform: scale(0.8) rotate(-5deg);
-      pointer-events: none;
-    }
-
-    /* ----- FIREWORK WRAPPER (Japanese girlish background) ----- */
-    .firework-wrapper {
-      position: relative;
-      width: 100%;
-      max-width: 500px;
-      aspect-ratio: 1 / 1.2;
-      background: radial-gradient(circle at 30% 20%, #2d1a24, #1a0e14, #0d080a);
-      border-radius: 36px;
-      box-shadow: 0 20px 40px rgba(0,0,0,0.7), 0 0 0 2px rgba(255, 182, 193, 0.12) inset;
-      overflow: hidden;
-      touch-action: none;
-      display: none;
-      animation: fadeInScale 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
-    }
-
-    .firework-wrapper.active {
-      display: block;
-    }
-
-    @keyframes fadeInScale {
-      0% {
-        opacity: 0;
-        transform: scale(0.9);
-      }
-      100% {
-        opacity: 1;
-        transform: scale(1);
-      }
-    }
-
-    /* Japanese pattern overlay on fireworks */
-    .firework-wrapper::before {
-      content: '🌸🌸🌸🌸🌸🌸🌸🌸🌸🌸🌸🌸🌸🌸🌸🌸🌸🌸🌸🌸';
-      position: absolute;
-      inset: 0;
-      font-size: 1.8rem;
-      letter-spacing: 30px;
-      word-break: break-all;
-      opacity: 0.03;
-      pointer-events: none;
-      z-index: 1;
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-      align-items: center;
-      padding: 20px;
-      line-height: 3;
-      border-radius: 36px;
-      overflow: hidden;
-    }
-
-    .firework-wrapper::after {
-      content: '';
-      position: absolute;
-      inset: 0;
-      background: radial-gradient(circle at 20% 30%, rgba(255, 105, 180, 0.06), transparent 60%);
-      pointer-events: none;
-      z-index: 1;
-      border-radius: 36px;
-    }
-
-    #fireworksCanvas {
-      display: block;
-      width: 100%;
-      height: 100%;
-      background: transparent;
-      cursor: pointer;
-      touch-action: none;
-      position: relative;
-      z-index: 2;
-    }
-
-    /* ----- MESSAGE OVERLAY (Japanese girlish colors) ----- */
-    .message-overlay {
-      position: absolute;
-      inset: 0;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      pointer-events: none;
-      opacity: 0;
-      transition: opacity 1.8s ease-in-out;
-      padding: 22px 24px;
-      z-index: 10;
-      text-shadow: 0 0 30px rgba(255, 105, 180, 0.3), 0 0 60px rgba(255, 50, 100, 0.15);
-    }
-
-    .message-overlay.show {
-      opacity: 1;
-    }
-
-    .message-overlay .top-left {
-      position: absolute;
-      top: 22px;
-      left: 24px;
-      font-size: clamp(1.8rem, 10vw, 3.2rem);
-      font-weight: 700;
-      letter-spacing: 0.08em;
-      background: linear-gradient(135deg, #ffb6c1, #ff69b4, #ff4d7a);
-      -webkit-background-clip: text;
-      background-clip: text;
-      color: transparent;
-      filter: drop-shadow(0 4px 20px rgba(255, 105, 180, 0.4));
-      line-height: 1.1;
-      font-family: 'Hiragino Sans', 'Yu Gothic', sans-serif;
-    }
-
-    .message-overlay .center-happy {
-      font-size: clamp(1.3rem, 6.5vw, 2.4rem);
-      font-weight: 700;
-      text-align: center;
-      background: linear-gradient(135deg, #ffd6e0, #ffb6c1, #ff8da1);
-      -webkit-background-clip: text;
-      background-clip: text;
-      color: transparent;
-      filter: drop-shadow(0 0 30px rgba(255, 105, 180, 0.3));
-      letter-spacing: 0.08em;
-      line-height: 1.2;
-      white-space: nowrap;
-      margin: 0;
-      font-family: 'Hiragino Sans', 'Yu Gothic', sans-serif;
-    }
-
-    .message-overlay .bottom-right {
-      position: absolute;
-      bottom: 22px;
-      right: 24px;
-      text-align: right;
-      display: flex;
-      flex-direction: column;
-      align-items: flex-end;
-      line-height: 1.2;
-    }
-
-    .message-overlay .bottom-right .hin-name {
-      font-size: clamp(1.8rem, 10vw, 3.2rem);
-      font-weight: 700;
-      background: linear-gradient(135deg, #ffb6c1, #ff69b4, #ff4d7a);
-      -webkit-background-clip: text;
-      background-clip: text;
-      color: transparent;
-      filter: drop-shadow(0 0 25px rgba(255, 105, 180, 0.4));
-      letter-spacing: 0.08em;
-      font-family: 'Hiragino Sans', 'Yu Gothic', sans-serif;
-    }
-
-    .message-overlay .bottom-right .date {
-      font-size: clamp(1.1rem, 5vw, 1.9rem);
-      font-weight: 400;
-      background: linear-gradient(135deg, #ffd6e0, #ffb6c1);
-      -webkit-background-clip: text;
-      background-clip: text;
-      color: transparent;
-      filter: drop-shadow(0 0 18px rgba(255, 105, 180, 0.2));
-      letter-spacing: 0.12em;
-      margin-top: -0.1em;
-      opacity: 0.95;
-      font-family: 'Hiragino Sans', 'Yu Gothic', sans-serif;
-    }
-
-    .message-overlay::before {
-      content: '🌸';
-      position: absolute;
-      top: 50%;
-      left: 15px;
-      transform: translateY(-50%);
-      font-size: 2rem;
-      opacity: 0.1;
-      pointer-events: none;
-    }
-
-    .message-overlay::after {
-      content: '🌸';
-      position: absolute;
-      bottom: 50%;
-      right: 15px;
-      transform: translateY(50%);
-      font-size: 2rem;
-      opacity: 0.1;
-      pointer-events: none;
-    }
-
-    /* ----- Audio control hint ----- */
-    .audio-hint {
-      position: absolute;
-      bottom: 12px;
-      left: 50%;
-      transform: translateX(-50%);
-      color: rgba(255, 182, 193, 0.25);
-      font-size: 0.6rem;
-      letter-spacing: 0.08em;
-      z-index: 15;
-      pointer-events: none;
-      opacity: 0;
-      transition: opacity 1s ease;
-      font-family: 'Hiragino Sans', 'Yu Gothic', sans-serif;
-    }
-
-    .audio-hint.show {
-      opacity: 1;
-    }
-
-    .audio-hint::before {
-      content: '🎵 ';
-    }
-
-    /* ----- Decorative cute elements ----- */
-    .cute-decoration {
-      position: absolute;
-      font-size: 1.2rem;
-      opacity: 0.15;
-      pointer-events: none;
-      z-index: 1;
-    }
-
-    @media (max-width: 420px) {
-      .card-stage, .firework-wrapper {
-        border-radius: 24px;
-        aspect-ratio: 1 / 1.3;
-      }
-      .card-stage {
-        padding: 20px;
-      }
-      .card-stage .card-hint {
-        bottom: 20px;
-        font-size: 0.7rem;
-      }
-      .message-overlay {
-        padding: 16px 18px;
-      }
-      .message-overlay .top-left {
-        top: 16px;
-        left: 18px;
-      }
-      .message-overlay .bottom-right {
-        bottom: 16px;
-        right: 18px;
-      }
-      .card-stage::before {
-        font-size: 1.8rem;
-        letter-spacing: 12px;
-        line-height: 2;
-      }
-      .firework-wrapper::before {
-        font-size: 1.2rem;
-        letter-spacing: 20px;
-        line-height: 2.5;
-      }
-      .audio-hint {
-        font-size: 0.5rem;
-        bottom: 8px;
-      }
-      .message-overlay::before,
-      .message-overlay::after {
-        font-size: 1.2rem;
-      }
-    }
-
-    @media (orientation: landscape) and (max-height: 500px) {
-      .card-stage, .firework-wrapper {
-        max-width: 70vh;
-        aspect-ratio: 1 / 1.1;
-      }
-    }
-  </style>
+        @media (orientation: landscape) and (max-height: 500px) {
+            .container {
+                max-width: 70vh;
+                aspect-ratio: 1 / 1.1;
+            }
+        }
+    </style>
 </head>
 <body>
-  <!-- CARD STAGE -->
-  <div class="card-stage" id="cardStage">
-    <div class="card-border"></div>
-    <div class="card-content">
-      <div class="card-title">Shan</div>
-      <div class="card-sub">✨ Happy birthday ✨</div>
-      <div class="card-icon">🎂</div>
+    <div class="container">
+        <div class="content">
+            <div class="name-group">
+                <span class="name">Shan</span>
+                <span class="name-ampersand">&</span>
+                <span class="name"></span>
+            </div>
+
+            <div class="divider"></div>
+
+            <div class="subtitle">together · everyday</div>
+
+            <div class="date">since 2024</div>
+
+            <div class="description">
+                <span>✦</span>  just two souls, walking side by side  <span>✦</span>
+            </div>
+        </div>
+
+        <div class="footer-note">✦  ✦  ✦</div>
     </div>
-    <div class="card-hint">tap to open</div>
-  </div>
-
-  <!-- FIREWORK WRAPPER -->
-  <div class="firework-wrapper" id="fireworkWrapper">
-    <canvas id="fireworksCanvas"></canvas>
-    <div class="message-overlay" id="messageOverlay">
-      <div class="top-left">Shan</div>
-      <div class="center-happy">✨ My Precious ✨</div>
-      <div class="bottom-right">
-        <span class="hin-name">Hin</span>
-        <span class="date">13 Aug 2026</span>
-      </div>
-    </div>
-    <div class="audio-hint" id="audioHint">happy birthday melody</div>
-  </div>
-
-  <!-- Audio element for "Happy Birthday to You" -->
-  <audio id="bgMusic" loop preload="auto">
-    <source src="./birthday.mp3" type="audio/mpeg">
-  </audio>
-
-<script>
-  (function(){
-    // ----- DOM refs -----
-    const cardStage = document.getElementById('cardStage');
-    const fireworkWrapper = document.getElementById('fireworkWrapper');
-    const overlay = document.getElementById('messageOverlay');
-    const canvas = document.getElementById('fireworksCanvas');
-    const ctx = canvas.getContext('2d');
-    const body = document.body;
-    const audio = document.getElementById('bgMusic');
-    const audioHint = document.getElementById('audioHint');
-
-    let fireworksActive = false;
-    let width, height;
-    let particles = [];
-    let autoInterval = null;
-    let messageShown = false;
-    let audioStarted = false;
-
-    // ----- CARD CLICK: transition to firework mode -----
-    cardStage.addEventListener('click', function openCard(e) {
-      if (fireworksActive) return;
-      fireworksActive = true;
-
-      // card exit animation
-      cardStage.classList.add('exit');
-
-      // change body background to dark
-      body.classList.add('fireworks-mode');
-
-      setTimeout(() => {
-        cardStage.style.display = 'none';
-        fireworkWrapper.classList.add('active');
-        
-        // Start background music
-        startAudio();
-        
-        // init canvas after display
-        resizeCanvas();
-        spawnInitialBursts();
-        startAutoFireworks();
-        draw();
-
-        // show message after delay
-        setTimeout(() => {
-          showBirthdayMessage();
-          // celebratory burst with girlish colors
-          const cssW = canvas._cssWidth || canvas.width;
-          const cssH = canvas._cssHeight || canvas.height;
-          const cx = cssW / 2;
-          const cy = cssH * 0.4;
-          const girlishPalette = ['#ff6b9d', '#ff4d7a', '#ff85b3', '#ffb6c1', '#ff69b4', '#ff8da1'];
-          burstFirework(cx - 30, cy - 20, girlishPalette, 90);
-          burstFirework(cx + 40, cy + 10, girlishPalette, 80);
-          burstFirework(cx, cy - 50, girlishPalette, 70);
-          setTimeout(() => {
-            miniBurst(cx + 50, cy - 30, 25);
-            miniBurst(cx - 50, cy + 20, 22);
-          }, 200);
-        }, 3000);
-        
-        // show audio hint after a moment
-        setTimeout(() => {
-          audioHint.classList.add('show');
-        }, 1500);
-      }, 600);
-    });
-
-    // ----- Audio functions -----
-    function startAudio() {
-      if (audioStarted) return;
-      audioStarted = true;
-      
-      // Try to play audio
-      const playPromise = audio.play();
-      if (playPromise !== undefined) {
-        playPromise.catch(error => {
-          // Auto-play was blocked, try on user interaction
-          console.log('Audio play blocked, will try on tap');
-          // Try again on any tap
-          document.addEventListener('click', function tryPlay() {
-            audio.play().catch(() => {});
-            document.removeEventListener('click', tryPlay);
-          }, { once: true });
-        });
-      }
-    }
-
-    // Also try to play when user taps the canvas (after card is opened)
-    document.addEventListener('click', function tryAudioOnTap() {
-      if (fireworksActive && !audioStarted) {
-        startAudio();
-      }
-    });
-
-    // ----- canvas resize -----
-    function resizeCanvas() {
-      const rect = canvas.parentElement.getBoundingClientRect();
-      const dpr = window.devicePixelRatio || 1;
-      const cssWidth = rect.width;
-      const cssHeight = rect.height;
-      canvas.style.width = cssWidth + 'px';
-      canvas.style.height = cssHeight + 'px';
-      canvas.width = cssWidth * dpr;
-      canvas.height = cssHeight * dpr;
-      width = canvas.width;
-      height = canvas.height;
-      ctx.scale(dpr, dpr);
-      canvas._cssWidth = cssWidth;
-      canvas._cssHeight = cssHeight;
-    }
-
-    window.addEventListener('resize', () => {
-      if (fireworksActive) {
-        resizeCanvas();
-      }
-    });
-
-    // ----- particle system with girlish palettes -----
-    const MAX_PARTICLES = 700;
-    const GRAVITY = 0.035;
-    const EXPLOSION_SPEED = 4.8;
-    const SPARKLE_CHANCE = 0.3;
-    const rand = (min, max) => Math.random() * (max - min) + min;
-
-    const palettes = [
-      ['#ff6b9d', '#ff4d7a', '#ff85b3', '#ffb6c1', '#ff69b4'],
-      ['#ffb6c1', '#ff69b4', '#ff4d7a', '#ff8da1', '#ffb3c1'],
-      ['#ff85b3', '#ffb6c1', '#ff4d7a', '#ff6b9d', '#ffa5b9'],
-      ['#ff69b4', '#ff4d7a', '#ffb6c1', '#ff85b3', '#ff8da1'],
-      ['#ffb347', '#ffa500', '#ffcc66', '#ffe699'],
-      ['#00b4d8', '#48cae4', '#90e0ef', '#caf0f8'],
-      ['#06d6a0', '#2ee6b0', '#7cf5c6', '#baf8dc'],
-      ['#f9c74f', '#f9d371', '#fae588', '#fcf2b0'],
-    ];
-
-    function randomPalette() {
-      return palettes[Math.floor(Math.random() * palettes.length)];
-    }
-
-    function createParticle(x, y, color, vx, vy, life, size = 4.0) {
-      return {
-        x, y, vx, vy, color,
-        life: life || 1.0,
-        maxLife: life || 1.0,
-        size: size * (0.7 + Math.random() * 0.6),
-        decay: 0.012 + Math.random() * 0.025,
-        gravity: GRAVITY * (0.7 + Math.random() * 0.6),
-        sparkle: Math.random() < SPARKLE_CHANCE,
-      };
-    }
-
-    function burstFirework(x, y, colorPalette, count = 70) {
-      const colors = colorPalette.slice(0);
-      for (let i = 0; i < count; i++) {
-        const angle = rand(0, Math.PI * 2);
-        const speed = rand(1.0, EXPLOSION_SPEED) * (0.7 + Math.random() * 0.6);
-        const vx = Math.cos(angle) * speed;
-        const vy = Math.sin(angle) * speed - 0.3;
-        const color = colors[Math.floor(Math.random() * colors.length)];
-        const life = 0.9 + Math.random() * 0.5;
-        const size = 3.0 + Math.random() * 5;
-        const p = createParticle(x, y, color, vx, vy, life, size);
-        if (p.sparkle) {
-          p.size *= 1.6;
-          p.decay *= 0.7;
-        }
-        particles.push(p);
-      }
-      if (particles.length > MAX_PARTICLES) {
-        particles.splice(0, particles.length - MAX_PARTICLES);
-      }
-    }
-
-    function miniBurst(x, y, count = 20) {
-      const pal = randomPalette();
-      for (let i = 0; i < count; i++) {
-        const angle = rand(0, Math.PI * 2);
-        const speed = rand(0.5, 2.8);
-        const vx = Math.cos(angle) * speed;
-        const vy = Math.sin(angle) * speed - 0.5;
-        const color = pal[Math.floor(Math.random() * pal.length)];
-        const p = createParticle(x, y, color, vx, vy, 0.8 + Math.random() * 0.4, 2.2 + Math.random() * 3);
-        p.decay = 0.02 + Math.random() * 0.03;
-        particles.push(p);
-      }
-    }
-
-    function spawnRandomFirework() {
-      const cssW = canvas._cssWidth || canvas.width;
-      const cssH = canvas._cssHeight || canvas.height;
-      const margin = 20;
-      const x = rand(margin, cssW - margin);
-      const y = rand(margin * 1.5, cssH * 0.85);
-      const pal = randomPalette();
-      const count = Math.floor(rand(55, 100));
-      burstFirework(x, y, pal, count);
-      if (Math.random() > 0.65) {
-        setTimeout(() => {
-          miniBurst(x + rand(-15, 15), y + rand(-15, 15), 12);
-        }, 60);
-      }
-    }
-
-    function spawnInitialBursts() {
-      const cssW = canvas._cssWidth || canvas.width;
-      const cssH = canvas._cssHeight || canvas.height;
-      const midX = cssW / 2;
-      const midY = cssH * 0.45;
-      const girlish = ['#ff6b9d', '#ff4d7a', '#ff85b3', '#ffb6c1'];
-      burstFirework(midX - 40, midY - 30, girlish, 65);
-      burstFirework(midX + 50, midY + 10, girlish, 70);
-      burstFirework(midX - 10, midY - 70, girlish, 55);
-      setTimeout(() => {
-        miniBurst(midX + 70, midY - 50, 20);
-        miniBurst(midX - 70, midY + 20, 18);
-      }, 200);
-    }
-
-    function showBirthdayMessage() {
-      if (messageShown) return;
-      messageShown = true;
-      overlay.classList.add('show');
-    }
-
-    // ----- animation loop -----
-    function draw() {
-      if (!fireworksActive) return;
-      const cssW = canvas._cssWidth || canvas.width;
-      const cssH = canvas._cssHeight || canvas.height;
-
-      ctx.clearRect(0, 0, cssW, cssH);
-
-      // faint stars with pinkish tint
-      for (let i=0; i<30; i++) {
-        const sx = (i*37 + 13) % cssW;
-        const sy = (i*53 + 7) % cssH;
-        ctx.beginPath();
-        ctx.arc(sx, sy, 0.4 + (i%4)*0.2, 0, Math.PI*2);
-        const pinkness = 0.1 + (i%5)*0.05;
-        ctx.fillStyle = `rgba(255, 182, 193, ${pinkness * 0.5})`;
-        ctx.fill();
-        if (i % 3 === 0) {
-          ctx.fillStyle = `rgba(255, 200, 210, ${pinkness * 0.3})`;
-          ctx.beginPath();
-          ctx.arc(sx + 5, sy - 3, 0.3, 0, Math.PI*2);
-          ctx.fill();
-        }
-      }
-
-      for (let i = particles.length - 1; i >= 0; i--) {
-        const p = particles[i];
-        p.vx *= 0.99;
-        p.vy += p.gravity;
-        p.x += p.vx;
-        p.y += p.vy;
-        p.life -= p.decay;
-        if (p.life <= 0 || p.y > cssH + 20 || p.x < -20 || p.x > cssW + 20) {
-          particles.splice(i, 1);
-          continue;
-        }
-
-        const alpha = Math.min(p.life / p.maxLife * 1.2, 1.0);
-        const size = p.size * (0.3 + 0.7 * (p.life / p.maxLife));
-
-        const grad = ctx.createRadialGradient(p.x, p.y, 0, p.x, p.y, size * 2.8);
-        grad.addColorStop(0, p.color + 'ee');
-        grad.addColorStop(0.3, p.color + 'aa');
-        grad.addColorStop(1, p.color + '00');
-        ctx.globalAlpha = alpha * 0.7;
-        ctx.beginPath();
-        ctx.arc(p.x, p.y, size * 2.8, 0, Math.PI * 2);
-        ctx.fillStyle = grad;
-        ctx.fill();
-
-        ctx.globalAlpha = alpha * 0.95;
-        ctx.beginPath();
-        ctx.arc(p.x, p.y, size * 0.7, 0, Math.PI * 2);
-        ctx.fillStyle = p.color;
-        ctx.fill();
-
-        if (p.sparkle && p.life > 0.3) {
-          ctx.globalAlpha = alpha * 0.6;
-          ctx.fillStyle = '#fff0f5';
-          ctx.beginPath();
-          ctx.arc(p.x - size*0.4, p.y - size*0.4, size * 0.25, 0, Math.PI*2);
-          ctx.fill();
-          ctx.beginPath();
-          ctx.arc(p.x + size*0.4, p.y + size*0.3, size * 0.2, 0, Math.PI*2);
-          ctx.fill();
-          ctx.fillStyle = '#ffd6e0';
-          ctx.beginPath();
-          ctx.arc(p.x - size*0.2, p.y + size*0.6, size * 0.15, 0, Math.PI*2);
-          ctx.fill();
-          ctx.fillStyle = '#ffb6c1';
-          ctx.beginPath();
-          ctx.arc(p.x + size*0.2, p.y - size*0.5, size * 0.1, 0, Math.PI*2);
-          ctx.fill();
-        }
-        ctx.globalAlpha = 1.0;
-      }
-
-      requestAnimationFrame(draw);
-    }
-
-    // ----- auto firework interval -----
-    function startAutoFireworks() {
-      if (autoInterval) clearInterval(autoInterval);
-      autoInterval = setInterval(() => {
-        if (!fireworksActive) return;
-        spawnRandomFirework();
-        if (Math.random() > 0.7) {
-          setTimeout(spawnRandomFirework, 100);
-        }
-      }, 1400);
-    }
-
-    // ----- user interaction (tap on canvas) -----
-    function handleTap(e) {
-      if (!fireworksActive) return;
-      e.preventDefault();
-      const rect = canvas.getBoundingClientRect();
-      let clientX, clientY;
-      if (e.touches) {
-        clientX = e.touches[0].clientX;
-        clientY = e.touches[0].clientY;
-        e.preventDefault();
-      } else {
-        clientX = e.clientX;
-        clientY = e.clientY;
-      }
-      const cssX = Math.min(Math.max(clientX - rect.left, 10), rect.width - 10);
-      const cssY = Math.min(Math.max(clientY - rect.top, 10), rect.height - 10);
-      const pal = randomPalette();
-      burstFirework(cssX, cssY, pal, 80 + Math.floor(Math.random() * 40));
-      for (let i=0; i<2; i++) {
-        setTimeout(() => {
-          miniBurst(cssX + rand(-20,20), cssY + rand(-20,20), 15);
-        }, 60 + i*80);
-      }
-      setTimeout(() => {
-        miniBurst(cssX + rand(-30,30), cssY + rand(-10,10), 10);
-      }, 150);
-    }
-
-    canvas.addEventListener('click', handleTap);
-    canvas.addEventListener('touchstart', handleTap, { passive: false });
-    canvas.addEventListener('contextmenu', (e) => e.preventDefault());
-
-    // ----- cleanup -----
-    document.addEventListener('visibilitychange', () => {
-      if (document.hidden) {
-        if (autoInterval) clearInterval(autoInterval);
-        if (audioStarted) audio.pause();
-      } else if (fireworksActive) {
-        startAutoFireworks();
-        if (audioStarted) audio.play().catch(() => {});
-      }
-    });
-
-    window.addEventListener('beforeunload', () => {
-      if (autoInterval) clearInterval(autoInterval);
-      if (audioStarted) audio.pause();
-    });
-
-  })();
-</script>
 </body>
 </html>
